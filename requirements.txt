@@ -1,0 +1,11 @@
+langchain-google-genai
+langchain-community
+arxiv
+pymupdf
+faiss-cpu
+pdfminer.six
+google-generativeai
+streamlit
+fastapi
+langchain
+google-generative-ai

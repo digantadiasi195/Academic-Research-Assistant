@@ -2,6 +2,8 @@
 
 An intelligent assistant that helps researchers search, analyze, and synthesize academic papers using Large Language Models (LLMs). The application provides multi-agent capabilities for paper search, question answering, summarization, and future research direction generation.
 
+[Watch the Project Demonstration on YouTube](http://www.youtube.com/watch?v=DpunojtYDFE)
+
 ## Features
 
 - **Paper Search**: Search and retrieve relevant research papers from Arxiv

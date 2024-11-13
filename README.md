@@ -129,48 +129,5 @@ faiss-cpu
 pdfminer.six
 ```
 
-## Development
 
-To set up the development environment:
 
-1. Install development dependencies:
-```bash
-pip install -r requirements-dev.txt
-```
-
-2. Run tests:
-```bash
-pytest tests/
-```
-
-3. Check code style:
-```bash
-flake8 .
-black .
-```
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Paper Download Failures**
-   - Check your internet connection
-   - Verify Arxiv API access
-   - Ensure sufficient disk space
-
-2. **Model Errors**
-   - Verify Google API key is set
-   - Check model quota limits
-   - Ensure proper model initialization
-
-3. **Memory Issues**
-   - Reduce batch size for paper processing
-   - Clear paper storage regularly
-   - Monitor vector store size
-
-### Support
-
-For support, please:
-1. Check existing issues on GitHub
-2. Create a new issue with detailed reproduction steps
-3. Include relevant error messages and logs

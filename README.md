@@ -80,21 +80,21 @@ streamlit run app.py
 ## Project Structure
 
 ```
-research-paper-assistant/
-├── agents/
+src
+├── agents
 │   ├── __init__.py
+│   ├── dummy
+│   ├── future_works_agent.py
 │   ├── intent_agent.py
-│   ├── search_agent.py
 │   ├── qa_agent.py
-│   ├── summarization_agent.py
-│   └── future_works_agent.py
-├── config/
+│   ├── search_agent.py
+│   └── summarization_agent.py
+├── config
 │   └── config.py
-├── papers/           # Downloaded papers storage
-├── app.py           # Main Streamlit application
-├── router.py        # Query routing logic
-├── requirements.txt
-└── README.md
+├── app.py
+├── router.py
+├── README.md
+└── requirements.txt
 ```
 
 ## Contributing

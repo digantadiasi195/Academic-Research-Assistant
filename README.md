@@ -4,6 +4,7 @@ An intelligent assistant that helps researchers search, analyze, and synthesize 
 
 [Watch the Project Demonstration on YouTube](http://www.youtube.com/watch?v=DpunojtYDFE)
 
+![Front-End of app](src/imgs/Frontend.png)
 ## Features
 
 - **Paper Search**: Search and retrieve relevant research papers from Arxiv

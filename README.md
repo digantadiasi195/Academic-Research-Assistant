@@ -55,6 +55,20 @@ pip install -r requirements.txt
 # Create .env file
 GOOGLE_API_KEY=your_api_key_here
 ```
+## Important Note
+
+⚠️ **Temporary API Key Usage:** 
+
+To enable testing without requiring additional setup, I have temporarily provided the Google API key directly in the code and GitHub repository. This is to allow the AI team to run the project without any configuration changes. Please note:
+
+- **Do not share or use this API key outside of this project.**
+- I will remove the API key from the codebase after a few days, once the review is complete.
+
+**If you plan to continue using the project, update the code to include your own API key and follow secure practices for handling sensitive data.**
+
+## Why Gemini API Instead of a Local LLM?
+
+I initially tried using Ollama to run the Qwen-32B model locally, but my system specifications were insufficient for this large model. The Gemini API provides a reliable, high-performance alternative that allows me to access advanced LLM capabilities without the need for specialized hardware.
 
 ## Usage
 
@@ -114,12 +128,16 @@ src
 See `requirements.txt` for a full list of dependencies. Key requirements include:
 
 ```
+langchain-google-genai
+langchain-community
+arxiv
+pymupdf
+faiss-cpu
+pdfminer.six
+google-generativeai
 streamlit
 fastapi
 langchain
-google-generative-ai
-faiss-cpu
-pdfminer.six
 ```
 
 

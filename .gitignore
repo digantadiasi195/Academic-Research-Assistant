@@ -1,3 +1,5 @@
 papers
 vector_db
 __pycache__
+.env
+.venv

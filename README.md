@@ -76,7 +76,7 @@ GOOGLE_API_KEY=your_api_key_here
 
 ## Why Gemini API Instead of a Local LLM?
 > [!NOTE]
-> I initially tried using Ollama to run the Qwen-32B model locally, but my system specifications were insufficient for this large model. The Gemini API provides a reliable, high-performance alternative that allows me to access advanced LLM capabilities without the need for specialized hardware.
+> I initially tried using Ollama to run the Qwen-32B model and Qwen-14B model locally, but my system specifications were insufficient for this large model. The Gemini API provides a reliable, high-performance alternative that allows me to access advanced LLM capabilities without the need for specialized hardware.
 
 ## Usage
 

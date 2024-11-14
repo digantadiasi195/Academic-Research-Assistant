@@ -5,6 +5,13 @@ An intelligent assistant that helps researchers search, analyze, and synthesize 
 [Watch the Project Demonstration on YouTube](http://www.youtube.com/watch?v=DpunojtYDFE)
 
 ![Front-End of app](src/imgs/Frontend.png)
+
+## Try It Out
+
+You can directly interact with the assistant on [Hugging Face spaces](https://huggingface.co/spaces/SanketAI/Academic-Research-Paper-Assistant).
+
+   **Tip:** In Streamlit website settings (by clicking on 3 dots in top right), change theme mode to "Light Mode" instead of "Dark Mode."
+
 ## Features
 
 - **Paper Search**: Search and retrieve relevant research papers from Arxiv
@@ -81,13 +88,15 @@ streamlit run app.py
 # python3 -m streamlit run app.py
 ```
 
-2. Open your browser and navigate to `http://localhost:8501`
+2. Open your browser and navigate to `http://localhost:8501` 
 
-3. Enter your research topic or question in the chat interface
+   **Tip:** In Streamlit website settings (by clicking on 3 dots in top right), change theme mode to "Light Mode" instead of "Dark Mode."
+  
+4. Enter your research topic or question in the chat interface
 
-4. Select papers of interest from the timeline view
+5. Select papers of interest from the timeline view
 
-5. Interact with the assistant through natural language queries
+6. Interact with the assistant through natural language queries
 
 ## Example Queries
 

@@ -55,17 +55,16 @@ pip install -r requirements.txt
 # Create .env file
 GOOGLE_API_KEY=your_api_key_here
 ```
+
+## Important Note
+
+**⚠️ Temporary API Key Usage:**
 > [!WARNING]
-> ## Important Note
-
-> **⚠️ Temporary API Key Usage:**
-
 > To enable testing without requiring additional setup, I have temporarily provided the Google API key directly in the code and GitHub repository. This is to allow the **attentions.ai team** to run the project without any configuration changes. Please note:
+> - **Do not share or use this API key outside of this project.**
+> - I will remove the API key from the codebase after a few days, once the review is complete.
 
->- **Do not share or use this API key outside of this project.**
->- I will remove the API key from the codebase after a few days, once the review is complete.
-
->**If you plan to continue using the project, update the code to include your own API key and follow secure practices for handling sensitive data.**
+**If you plan to continue using the project, update the code to include your own API key and follow secure practices for handling sensitive data.**
 
 
 ## Why Gemini API Instead of a Local LLM?

@@ -21,4 +21,4 @@ class Router:
                 return ans , d
             return agent.solve(query) , None
         else:
-            return "Sorry, I couldn't understand your query." , None
+            return "Sorry, I couldn't understand your query. Please give valid question" , None

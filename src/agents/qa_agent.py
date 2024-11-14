@@ -1,9 +1,10 @@
-from config import model
-from langchain.vectorstores import FAISS
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
 import os
 import streamlit as st 
 from agents import  SearchAgent
+from langchain.vectorstores import FAISS
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from config.config import model
+
 
 
             
@@ -34,20 +35,20 @@ class QAAgent:
 
     def solve(self, query):
         # Check if search has been performed
-        if not os.path.exists("vdb_chunks"):
+        if not os.path.exists("vector_db"):
             st.warning("No papers loaded. Performing search first...")
             search_agent = SearchAgent()
             self.search_agent_response , self.papers = search_agent.solve(query)
             
         # Load vector store
-        vdb_chunks = FAISS.load_local("vdb_chunks", embeddings, index_name="base_and_adjacent", allow_dangerous_deserialization=True)
+        vector_db = FAISS.load_local("vector_db", embeddings, index_name="base_and_adjacent", allow_dangerous_deserialization=True)
         
         # Get chat history
         chat_history = st.session_state.get("chat_history", [])
         chat_history_text = "".join([f"{sender}: {msg}" for sender, msg in chat_history[-5:]])  # Last 5 messages
         
         # Get relevant chunks
-        retrieved = vdb_chunks.as_retriever().get_relevant_documents(query)
+        retrieved = vector_db.as_retriever().get_relevant_documents(query)
         context = "".join([f"{doc.page_content}\n Source: {doc.metadata['source']}" for doc in retrieved])
         
         # Generate response

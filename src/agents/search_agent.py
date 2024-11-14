@@ -1,7 +1,4 @@
 
-from config import model
-import urllib.request as libreq
-import xml.etree.ElementTree as ET
 import requests
 import os
 from langchain.document_loaders import PDFMinerLoader
@@ -11,12 +8,15 @@ from langchain_community.document_loaders import ArxivLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import faiss
 from langchain_community.docstore.in_memory import InMemoryDocstore
+from config.config import model
+import urllib.request as libreq
+import xml.etree.ElementTree as ET
 
 os.makedirs("papers", exist_ok=True)
 
             
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-index = faiss.IndexFlatL2(len(embeddings.embed_query("hello world")))
+index = faiss.IndexFlatL2(len(embeddings.embed_query("dummy query")))
 
 text_splitter   =   RecursiveCharacterTextSplitter(
             chunk_size=700, 
@@ -24,31 +24,19 @@ text_splitter   =   RecursiveCharacterTextSplitter(
             length_function=len 
         )
 
-
-
-
-
 class SearchAgent:
     def __init__(self):
      
         self.model = model
         self.p = """You are an assistant designed to extract research topics or titles from user queries. When a user asks about a specific topic, identify the central subject of their query and provide a concise, clear title or topic related to that area of research. If the query refers to a particular research paper, include the paper's title, author(s), and publication year.
-
-            Here are the instructions you should follow:
-
-            General Topics: If the query mentions a general topic without referring to a specific paper, identify the primary research area or topic. For example, if the query is "What are the advancements in text-to-SQL models?" your response should be simply "Text-to-SQL Models."
-
-            Specific Research Papers: If the query mentions a particular paper, extract the title, author(s), and year of the paper. For example, if the query is "What did the paper by John Doe in 2022 say about AI in healthcare?" your response should be "AI in Healthcare (John Doe, 2022)."
-
-            Abstract or General Query: If the query is an abstract or general inquiry into a topic, return the main theme or title of that topic. For instance, "What are the advancements in natural language processing?" would result in "Natural Language Processing Advancements."
-
-            Examples:
-
-            User Query: "Tell me about recent advancements in text-to-SQL models." Response: "Text-to-SQL Models."
-
-            User Query: "What does the paper 'Deep Learning for Text-to-SQL by Jane Smith, 2021' cover?" Response: "'Deep Learning for Text-to-SQL' (Jane Smith, 2021)."
-
-            User Query: "Can you summarize the paper by Alice Brown on quantum computing from 2020?" Response: "'Quantum Computing: A New Frontier' (Alice Brown, 2020)." """
+                    Here are the instructions you should follow:
+                    General Topics: If the query mentions a general topic without referring to a specific paper, identify the primary research area or topic. For example, if the query is "What are the advancements in text-to-SQL models?" your response should be simply "Text-to-SQL Models."
+                    Specific Research Papers: If the query mentions a particular paper, extract the title, author(s), and year of the paper. For example, if the query is "What did the paper by John Doe in 2022 say about AI in healthcare?" your response should be "AI in Healthcare (John Doe, 2022)."
+                    Abstract or General Query: If the query is an abstract or general inquiry into a topic, return the main theme or title of that topic. For instance, "What are the advancements in natural language processing?" would result in "Natural Language Processing Advancements."
+                    Examples:
+                    User Query: "Tell me about recent advancements in text-to-SQL models." Response: "Text-to-SQL Models."
+                    User Query: "What does the paper 'Deep Learning for Text-to-SQL by Jane Smith, 2021' cover?" Response: "'Deep Learning for Text-to-SQL' (Jane Smith, 2021)."
+                    User Query: "Can you summarize the paper by Alice Brown on quantum computing from 2020?" Response: "'Quantum Computing: A New Frontier' (Alice Brown, 2020)." """
 
     def solve(self, task):
         print(f"Searching for information on: {task}")
@@ -92,7 +80,7 @@ class SearchAgent:
             
             papers.append(paper_info)
 
-        adjacents_papers_numbers = []
+        all_papers = []
 
         def download_pdf_paper_from_url(url):
             paper_number = os.path.basename(url).strip(".pdf")
@@ -104,26 +92,24 @@ class SearchAgent:
             
         for paper in papers:
             paper_number = download_pdf_paper_from_url(paper['link'])
-            adjacents_papers_numbers.append(paper_number)
+            all_papers.append(paper_number)
             # Add paper number to paper info
             paper['paper_number'] = paper_number
 
-        vdb_chunks = FAISS(
+        vector_db = FAISS(
             embedding_function=embeddings,
             index=index,
             docstore=InMemoryDocstore(),
             index_to_docstore_id={}
         )
         
-        for pdf_number in adjacents_papers_numbers:
+        for pdf_number in all_papers:
             docs = ArxivLoader(query=pdf_number)
             docs = PDFMinerLoader(f"papers/{pdf_number}.pdf").load()
             docs = text_splitter.split_documents(docs)
-            vdb_chunks.add_documents(docs)
+            vector_db.add_documents(docs)
         
-        vdb_chunks.save_local("vdb_chunks", index_name="base_and_adjacent")
+        vector_db.save_local("vector_db", index_name="base_and_adjacent")
         
         return ["Here are the papers on" + query] , papers # Return the list of paper dictionaries
-        #vdb_chunks  =   FAISS.load_local("vdb_chunks", embeddings, index_name="base_and_adjacent",allow_dangerous_deserialization=True)
-     
 

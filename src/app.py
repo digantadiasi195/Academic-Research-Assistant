@@ -4,18 +4,17 @@ import sys
 from typing import Tuple, List, Dict, Optional
 from router import Router
 
-# Add the current directory to Python path for local imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 class AcademicResearchAssistant:
     def __init__(self):
-        """Initialize the Academic Research Assistant"""
+      
         self.router = Router()
         self.setup_streamlit_config()
         self.initialize_session_state()
 
     def setup_streamlit_config(self):
-        """Configure Streamlit page settings and theme"""
+    
         st.set_page_config(
             page_title="Academic Research Assistant",
             page_icon="📚",
@@ -104,7 +103,7 @@ class AcademicResearchAssistant:
         """, unsafe_allow_html=True)
 
     def initialize_session_state(self):
-        """Initialize session state variables"""
+       
         if "chat_history" not in st.session_state:
             st.session_state.chat_history = []
         if "fetched_papers" not in st.session_state:
@@ -115,7 +114,7 @@ class AcademicResearchAssistant:
             st.session_state.total_searches = 0
 
     def display_welcome_message(self):
-        """Display the welcome message and application description"""
+
         st.title("📚 Academic Research Paper Assistant")
         
         # Create three columns for metrics
@@ -150,7 +149,7 @@ class AcademicResearchAssistant:
         
 
     def create_chat_interface(self) -> Tuple[str, bool]:
-        """Create and return the chat interface components"""
+       
         with st.container():
             st.write("### 💬 Research Query Interface")
             
@@ -176,19 +175,16 @@ class AcademicResearchAssistant:
                 st.session_state.fetched_papers = []
                 st.session_state.search_count = 0
                 st.session_state.total_searches = 0
-                st.experimental_rerun()
+                st.rerun()
                 
         return user_input, send_button
 
     def process_user_input(self, user_input: str):
-        """Process user input and update the chat history"""
+        
         with st.spinner('🔍 Working on response...'):
             # Update search metrics
             st.session_state.search_count = len(st.session_state.fetched_papers)
             st.session_state.total_searches += 1
-            
-            # Add user message to chat history
-            
             
             try:
                 # Get response from router
@@ -199,7 +195,7 @@ class AcademicResearchAssistant:
                     unique_papers = {paper['paper_number']: paper for paper in papers}
                     st.session_state.fetched_papers = list(unique_papers.values())
                 
-                # Add bot response to chat history
+                # Add bot response and use message to chat history
                 if response:
                     st.session_state.chat_history.append(("Bot", response))
                     st.session_state.chat_history.append(("User", user_input))
@@ -258,23 +254,22 @@ class AcademicResearchAssistant:
         """Main method to run the application"""
         self.display_welcome_message()
         
-        # Create chat interface
+
         user_input, send_button = self.create_chat_interface()
-        
-        # Display chat history (now above the input box)
+
         st.markdown("### 💬 Chat History")
         self.display_chat_history()
         
-        # Process user input if provided
+
         if user_input and send_button:
             self.process_user_input(user_input)
-            st.experimental_rerun()
+            st.rerun()
         
         st.markdown("---")
         self.display_papers()
 
 def main():
-    """Main function to run the Streamlit application"""
+
     app = AcademicResearchAssistant()
     app.run()
 

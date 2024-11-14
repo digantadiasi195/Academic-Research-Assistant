@@ -36,14 +36,13 @@ The application uses a multi-agent system with the following components:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/research-paper-assistant.git
-cd research-paper-assistant
+git clone https://github.com/Sanket-Kathrotiya/Academic-Research-Paper-Assistant.git
 ```
 
 2. Create and activate a virtual environment:
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+conda create --name venv
+conda activate venv
 ```
 
 3. Install dependencies:
@@ -61,6 +60,7 @@ GOOGLE_API_KEY=your_api_key_here
 
 1. Start the application:
 ```bash
+cd src
 streamlit run app.py
 ```
 

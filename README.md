@@ -77,6 +77,8 @@ GOOGLE_API_KEY=your_api_key_here
 ```bash
 cd src
 streamlit run app.py
+# or run  following 
+# python3 -m streamlit run app.py
 ```
 
 2. Open your browser and navigate to `http://localhost:8501`

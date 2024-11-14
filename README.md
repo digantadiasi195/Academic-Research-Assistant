@@ -55,9 +55,9 @@ pip install -r requirements.txt
 # Create .env file
 GOOGLE_API_KEY=your_api_key_here
 ```
-## Important Note
+## ⚠️ Important Note
 
-⚠️ **Temporary API Key Usage:** 
+**⚠️ Temporary API Key Usage:**
 
 To enable testing without requiring additional setup, I have temporarily provided the Google API key directly in the code and GitHub repository. This is to allow the **attentions.ai team** to run the project without any configuration changes. Please note:
 

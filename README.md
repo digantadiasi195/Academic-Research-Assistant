@@ -69,7 +69,7 @@ GOOGLE_API_KEY=your_api_key_here
 > [!WARNING]
 > To enable testing without requiring additional setup, I have temporarily provided the Google API key directly in the code and GitHub repository. This is to allow the recruitment teams to run the project without any configuration changes. Please note:
 > - **Do not share or use this API key outside of this project.**
-> - I will remove the API key from the codebase after a few days, once the review is complete.
+> - I will remove the API key from the codebase after a few days.
 
 **If you plan to continue using the project, update the code to include your own API key and follow secure practices for handling sensitive data.**
 

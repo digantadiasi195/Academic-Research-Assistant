@@ -1,16 +1,9 @@
 # Academic Research Paper Assistant
 
 An intelligent assistant that helps researchers search, analyze, and synthesize academic papers using Large Language Models (LLMs). The application offers multi-agent capabilities for paper search, question answering, summarization, and future research direction generation.
-
-<div align="center">
-  <img src="src/imgs/HomePagepng.png" alt="Front-End of App" width="600" />
-</div>
-
-<div align="center">
-  <img src="src/imgs/Q1.png" alt="Search paper of App" width="300" />
-  <img src="src/imgs/Q3.png" alt="Query of App" width="300" />
-</div>
-
+![Front-End of app](src/imgs/Frontend.png)
+![Search paper on app](src/imgs/Q1.png)
+![Query on selected paper](src/imgs/Q3.png)
 ---
 
 ## Table of Contents

@@ -1,275 +1,230 @@
 import streamlit as st
 import os
 import sys
-from typing import Tuple, List, Dict, Optional
+from typing import Tuple, List, Dict
 from router import Router
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 class AcademicResearchAssistant:
     def __init__(self):
-      
         self.router = Router()
         self.setup_streamlit_config()
         self.initialize_session_state()
 
     def setup_streamlit_config(self):
-    
+        """Configures Streamlit page settings"""
         st.set_page_config(
             page_title="Academic Research Assistant",
             page_icon="📚",
             layout="wide",
-            initial_sidebar_state="expanded",
-            menu_items={
-                'Get Help': 'https://github.com/yourusername/academic-research-assistant',
-                'Report a bug': "https://github.com/yourusername/academic-research-assistant/issues",
-                'About': "# Academic Research Assistant v1.0\nYour intelligent research companion."
-            }
+            initial_sidebar_state="expanded"
         )
 
-        # Custom CSS to enhance the UI
-        st.markdown("""
+        # CSS
+        st.markdown(
+            """
             <style>
-            .stApp {
-                background: linear-gradient(to bottom right, #f5f7fa, #eef2f7);
-            }
-            .stButton>button {
-                background-color: #1f4287;
-                color: white;
-                border-radius: 5px;
-                padding: 0.5rem 1rem;
-            }
-            .stProgress .st-bo {
-                background-color: #1f4287;
-            }
-            .chat-message {
-                padding: 10px;
-                border-radius: 5px;
-                margin: 5px 0;
-                animation: fadeIn 0.5s ease-in;
-            }
-            .user-message {
-                background-color: #e6f3ff;
-            }
-            .bot-message {
-                background-color: #f0f2f6;
-            }
-            @keyframes fadeIn {
-                from {opacity: 0;}
-                to {opacity: 1;}
-            }
-            .paper-card {
-                background-color: white;
-                padding: 1.5rem;
-                border-radius: 10px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                margin-bottom: 1rem;
-            }
-            .paper-title {
-                color: #1f4287;
-                font-size: 1.1rem;
-                font-weight: bold;
-                margin-bottom: 0.5rem;
-            }
-            .paper-metadata {
-                font-size: 0.9rem;
-                color: #666;
-                margin-bottom: 0.5rem;
-            }
-            .paper-abstract {
-                font-size: 0.95rem;
-                line-height: 1.5;
-                margin-top: 1rem;
-                padding-left: 1rem;
-                border-left: 3px solid #1f4287;
-            }
-            .download-button {
-                background-color: #4CAF50;
-                color: white;
-                padding: 0.5rem 1rem;
-                border-radius: 5px;
-                text-decoration: none;
-                display: inline-block;
-                margin-top: 1rem;
-            }
-            .metric-card {
-                background-color: white;
-                padding: 1rem;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-                text-align: center;
-            }
+                body {
+                    background-color: #f5f7fa;
+                }
+                .stTextInput, .stSelectbox, .stButton>button {
+                    font-size: 16px !important;
+                    border-radius: 8px !important;
+                    padding: 10px !important;
+                }
+                .stButton>button {
+                    background-color: #1f77b4 !important;
+                    color: white !important;
+                    border: none;
+                }
+                .paper-card {
+                    background-color: #ffffff;
+                    padding: 15px;
+                    border-radius: 10px;
+                    box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+                    margin-bottom: 10px;
+                    color: black;  /* Ensure text is readable */
+                }
+                .answer-box {
+                    background-color: #e8f4f8 !important;
+                    padding: 15px;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    color: black !important; /* Ensure text is visible */
+                }
             </style>
-        """, unsafe_allow_html=True)
+            """,
+            unsafe_allow_html=True
+        )
 
     def initialize_session_state(self):
-       
+        """Initializes session state variables"""
         if "chat_history" not in st.session_state:
             st.session_state.chat_history = []
         if "fetched_papers" not in st.session_state:
             st.session_state.fetched_papers = []
-        if "search_count" not in st.session_state:
-            st.session_state.search_count = 0
+        if "selected_paper" not in st.session_state:
+            st.session_state.selected_paper = None
+        if "selected_paper_title" not in st.session_state:
+            st.session_state.selected_paper_title = None
+        if "papers_directory" not in st.session_state:
+            st.session_state.papers_directory = os.path.join(os.getcwd(), "papers") 
+        if "paper_titles" not in st.session_state:
+            st.session_state.paper_titles = {}  # Mapping: {title -> filename}
         if "total_searches" not in st.session_state:
-            st.session_state.total_searches = 0
+            st.session_state.total_searches = 0  
 
-    def display_welcome_message(self):
-
+    def display_welcome_section(self):
+        """Displays the welcome section with key features"""
         st.title("📚 Academic Research Paper Assistant")
+        # st.markdown("""
+        #     Welcome to your intelligent research companion! This tool helps you:
+        #     - 🔍 **Find relevant academic papers**
+        #     - 📊 **Analyze research trends**
+        #     - 📖 **Access paper summaries**
+        #     - 📥 **Download full papers**
+        # """)
         
-        # Create three columns for metrics
-        col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
-        
+        # Display Metrics
+        col1, col2 = st.columns([2, 1])
         with col1:
-            st.markdown("""
-            Welcome to your intelligent research companion! This tool helps you:
-            - 🔍 Find relevant academic papers
-            - 📊 Analyze research trends
-            - 📖 Access paper summaries
-            - 📥 Download full papers
-            """)
-        
-        # Display metrics in cards
-        with col3:
-            st.markdown("""
-                <div class="metric-card">
-                    <h3>Papers Found</h3>
-                    <h2>{}</h2>
+            st.markdown(""" 
+            This tool helps you:
+            - 🔍 **Find relevant academic papers**
+            - 📊 **Analyze research trends**
+            - 📖 **Access paper summaries**
+            - 📥 **Download full papers**
+        """, unsafe_allow_html=True)
+
+        with col2:
+            st.markdown(
+            f"""
+            <div style="display: flex; justify-content: space-between;">
+                <div style="width: 48%; text-align: center; padding: 15px; 
+                            background-color: #222831; color: #ffffff; 
+                            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); 
+                            border-radius: 10px;">
+                    <h4 style="color: #eeeeee;">Papers Found</h4>
+                    <h2 style="color: #00ADB5;">{len(st.session_state.fetched_papers)}</h2>
                 </div>
-            """.format(len(st.session_state.fetched_papers)), unsafe_allow_html=True)
-            
-        with col4:
-            st.markdown("""
-                <div class="metric-card">
-                    <h3>Total Searches</h3>
-                    <h2>{}</h2>
+                <div style="width: 48%; text-align: center; padding: 15px; 
+                            background-color: #222831; color: #ffffff; 
+                            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2); 
+                            border-radius: 10px;">
+                    <h4 style="color: #eeeeee;">Total Searches</h4>
+                    <h2 style="color: #00ADB5;">{st.session_state.total_searches}</h2>
                 </div>
-            """.format(st.session_state.total_searches), unsafe_allow_html=True)
-      
-        
+            </div>
+            """,
+            unsafe_allow_html=True
+            )
 
     def create_chat_interface(self) -> Tuple[str, bool]:
-       
+        """Creates the search query input interface"""
         with st.container():
-            st.write("### 💬 Research Query Interface")
+            st.subheader("💬 Research Query Interface")
             
-            # Create columns for better layout
-            col1, col2 = st.columns([4, 1])
-            
+            col1, col2 = st.columns([7, 2])
             with col1:
                 user_input = st.text_input(
-                    "Enter your research query (e.g., 'Recent advances in quantum computing')",
+                    "Enter your research query",
                     key="user_input",
-                    placeholder="Type your research question here...",
+                    placeholder="Type your research topic here...",
                     max_chars=500
                 )
-            
-            col3, col4, col5 = st.columns([2, 1, 1])
-            with col3:
-                send_button = st.button("🔍 Search ", use_container_width=True)
-            with col4:
-                clear_button = st.button("🗑️ Clear History", use_container_width=True)
-            
-            if clear_button:
-                st.session_state.chat_history = []
-                st.session_state.fetched_papers = []
-                st.session_state.search_count = 0
-                st.session_state.total_searches = 0
-                st.rerun()
-                
+            with col2:
+                st.markdown("<br>", unsafe_allow_html=True)
+                send_button = st.button("🔍 Search", use_container_width=True)
+
         return user_input, send_button
 
     def process_user_input(self, user_input: str):
-        
-        with st.spinner('🔍 Working on response...'):
-            # Update search metrics
-            st.session_state.search_count = len(st.session_state.fetched_papers)
-            st.session_state.total_searches += 1
-            
-            try:
-                # Get response from router
-                response, papers = self.router.route_query(user_input)
-                
-                # Update papers in session state
-                if papers:
-                    unique_papers = {paper['paper_number']: paper for paper in papers}
-                    st.session_state.fetched_papers = list(unique_papers.values())
-                
-                # Add bot response and use message to chat history
-                if response:
-                    st.session_state.chat_history.append(("Bot", response))
-                    st.session_state.chat_history.append(("User", user_input))
-                else:
-                    st.session_state.chat_history.append(
-                        ("Bot", "I couldn't find relevant papers for your query. Please try rephrasing or use more specific terms.")
-                    )
-            except Exception as e:
-                st.session_state.chat_history.append(
-                    ("Bot", f"An error occurred while processing your request: {str(e)}")
-                )
-                st.error("There was an error processing your request. Please try again.")
+        """Processes user input and fetches relevant papers"""
+        if not user_input.strip():
+            st.warning("⚠️ Please enter a valid research query.")
+            return
+        with st.spinner('🔍 Fetching relevant papers...'):
+            response = self.router.route_query(user_input)
 
-    def display_chat_history(self):
-        """Display the chat history with user and bot messages"""
-        for sender, message in reversed(st.session_state.chat_history):
-            if sender == "User":
-                st.markdown(
-                    "<div class='chat-message user-message'>"
-                    f"<strong>👤 You:</strong> {message}"
-                    "</div>",
-                    unsafe_allow_html=True
-                )
+            # ✅ Ensure Total Searches increments properly
+            st.session_state.total_searches += 1  
+
+            if response.get("papers"):
+                papers = response["papers"]
+                st.session_state.fetched_papers = papers
+                st.session_state.paper_titles = papers  # Store mapping correctly
             else:
-                st.markdown(
-                    "<div class='chat-message bot-message'>"
-                    f"<strong>🤖 Assistant:</strong> {message[0]}"
-                    "</div>",
-                    unsafe_allow_html=True
+                st.session_state.chat_history.append(
+                    ("Assistant", "No relevant papers found. Try another query.")
                 )
 
     def display_papers(self):
-        """Display the list of fetched papers with download links"""
-        st.write("### 📄 Retrieved Research Papers")
-        if st.session_state.fetched_papers:
-            for paper in st.session_state.fetched_papers:
-                with st.expander(f"📑 {paper.get('title', 'Untitled Paper')}"):
-                    st.markdown(
-                        "<div class='paper-card'>"
-                        f"<div class='paper-title'>{paper.get('title', '').replace('\n', ' ').strip()}</div>"
-                        f"<div class='paper-metadata'>Year: {paper.get('year', 'N/A')} | Paper ID: {paper.get('paper_number', 'N/A')}</div>"
-                        f"""{'<div class="paper-abstract">' + paper.get('abstract', '') + '</div>' if paper.get('abstract') else ''}"""
-                        "</div>",
-                        unsafe_allow_html=True
-                    )
-                    
-                    download_link = paper.get('link')
-                    if download_link:
-                        st.markdown(f"[📥 Download PDF]({download_link})")
-                    else:
-                        st.warning("⚠️ No download link available")
+        """Displays the list of retrieved papers"""
+        st.subheader("📄 Retrieved Research Papers")
+
+        paper_titles = list(st.session_state.paper_titles.keys())
+
+        if paper_titles:
+            selected_title = st.selectbox("Select a paper for QA", paper_titles)
+            st.session_state.selected_paper_title = selected_title
+            selected_path = st.session_state.paper_titles[selected_title]
+            st.session_state.selected_paper = selected_path
+
+            # **Fixed: Ensure text visibility**
+            st.markdown(
+                f"""
+                   <div class="paper-card">
+                   <h4>📄 <strong style="color: black;">{selected_title}</strong></h4>
+                   </div>
+                """,
+                unsafe_allow_html=True
+            )
         else:
-            st.info("🔍 No papers fetched yet. Start by entering a research query above!")
+            st.info("🔍 No papers available. Please search first.")
+
+    def create_question_interface(self):
+        """Creates the QA interface for the selected paper"""
+        if st.session_state.selected_paper:
+            selected_title = st.session_state.selected_paper_title
+            selected_file_path = st.session_state.selected_paper
+
+            st.subheader(f"📝 Ask a Question on {selected_title}")
+            question = st.text_input("Enter your question:")
+
+            if st.button("🔎 Get Answer"):
+                with st.spinner("Processing your question..."):
+                    if os.path.exists(selected_file_path):
+                        response = self.router.route_question(selected_file_path, question)
+                        
+                        # **Fixed: Ensure answer box is visible**
+                        st.markdown(
+                            f"""
+                            <div class="answer-box">
+                                <h4 style="color: black;">🤖 Answer:</h4>
+                                <p style="color: black;">{response}</p>
+                            </div>
+                            """,
+                            unsafe_allow_html=True
+                        )
+                    else:
+                        st.error(f"❌ Error: Paper not found at `{selected_file_path}`")
+                        st.write("🔍 Please check if the paper exists in the `papers/` directory.")
 
     def run(self):
-        """Main method to run the application"""
-        self.display_welcome_message()
+        """Runs the main application"""
+        self.display_welcome_section()
         
-
         user_input, send_button = self.create_chat_interface()
-
-        st.markdown("### 💬 Chat History")
-        self.display_chat_history()
-        
 
         if user_input and send_button:
             self.process_user_input(user_input)
             st.rerun()
-        
-        st.markdown("---")
+
         self.display_papers()
+        self.create_question_interface()
 
 def main():
-
     app = AcademicResearchAssistant()
     app.run()
 

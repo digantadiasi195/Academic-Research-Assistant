@@ -2,13 +2,10 @@
 
 An intelligent assistant that helps researchers search, analyze, and synthesize academic papers using Large Language Models (LLMs). The application provides multi-agent capabilities for paper search, question answering, summarization, and future research direction generation.
 
-[Watch the Project Demonstration on YouTube](http://www.youtube.com/watch?v=DpunojtYDFE)
+![Front-End of app](src/imgs/HomePagepng.png)
 
-![Front-End of app](src/imgs/Frontend.png)
-
+![Front-End of app](src/imgs/HomePagepng.png)
 ## Try It Out
-
-You can directly interact with the assistant on [Hugging Face spaces](https://huggingface.co/spaces/SanketAI/Academic-Research-Paper-Assistant).
 
    **Tip:** In Streamlit website settings (by clicking on 3 dots in top right), change theme mode to "Light Mode" instead of "Dark Mode."
 
@@ -43,7 +40,7 @@ The application uses a multi-agent system with the following components:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/Sanket-Kathrotiya/Academic-Research-Paper-Assistant.git
+git clone https://github.com/
 ```
 
 2. Create and activate a virtual environment:
@@ -62,11 +59,6 @@ pip install -r requirements.txt
 # Create .env file
 GOOGLE_API_KEY=your_api_key_here
 ```
-
-## Why Gemini API Instead of a Local LLM?
-> [!NOTE]
-> I initially tried using Ollama to run the Qwen-32B model and Qwen-14B model locally, but my system specifications were insufficient for this large model. The Gemini API provides a reliable, high-performance alternative that allows me to access advanced LLM capabilities without the need for specialized hardware.
-
 ## Usage
 
 1. Start the application:
@@ -98,21 +90,28 @@ streamlit run app.py
 ## Project Structure
 
 ```
-src
-├── agents
-│   ├── __init__.py
-│   ├── dummy
-│   ├── future_works_agent.py
-│   ├── intent_agent.py
-│   ├── qa_agent.py
-│   ├── search_agent.py
-│   └── summarization_agent.py
-├── config
-│   └── config.py
-├── app.py
-├── router.py
-├── README.md
-└── requirements.txt
+
+## 🖥️ Project Structure
+```bash
+academic-research-assistant/
+├── src/
+│   ├── app.py             # Streamlit frontend
+│   ├── router.py          # API routing & logic
+│   ├── config/
+│   │   ├── config.py      # Configuration settings
+│   ├── agents/
+│   │   ├── search_agent.py   # Handles search functionality
+│   │   ├── qa_agent.py       # Handles Q&A system
+│   │   ├── summarization_agent.py  # Summarization logic
+│   ├── database/
+│   │   ├── neo4j_client.py  # Graph database integration
+│   ├── models/
+│   │   ├── llm_manager.py   # LLM API integration
+│   ├── frontend/
+│   │   ├── ui.py            # UI styling & components
+├── papers/                  # Downloaded research papers
+├── requirements.txt          # Python dependencies
+├── README.md                 # Documentation
 ```
 
 
@@ -142,4 +141,24 @@ langchain
 ```
 
 
+## 🤝 Contributing
 
+We welcome contributions! Follow these steps:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Commit changes (`git commit -m "Added new feature"`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Submit a pull request.
+---
+
+## 📜 License
+This project is licensed under the MIT License.
+
+---
+
+## 📬 Contact
+For issues, suggestions, or feedback, feel free to reach out:
+- GitHub Issues: [Create an Issue](https://github.com/digantadiasi195/academic-research-assistant/issues)
+- Email: digantadiasi@gmail.com
+
+Happy researching!

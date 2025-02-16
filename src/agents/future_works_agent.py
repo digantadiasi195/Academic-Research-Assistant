@@ -1,11 +1,14 @@
-from langchain.vectorstores import FAISS
+#future_work_agent.py
+from langchain_community.vectorstores import FAISS
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 import os
-from agents import  SearchAgent
+from src.agents import  SearchAgent
 import streamlit as st
-from config.config import model
-
-embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+from src.config.config import model
+from src.agents.google_credentials import get_google_credentials
+# Get the credentials from the google_credentials.py file
+credentials = get_google_credentials()
+embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", credentials=credentials)
 
 class FutureWorksAgent:
     def __init__(self):

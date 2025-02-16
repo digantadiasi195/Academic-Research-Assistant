@@ -1,4 +1,5 @@
-from config.config import model
+#intent_agent.py
+from src.config.config import model
 
 class IntentAgent:
     def __init__(self):

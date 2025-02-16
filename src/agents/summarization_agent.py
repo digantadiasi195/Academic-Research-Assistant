@@ -1,13 +1,16 @@
-from langchain.vectorstores import FAISS
+#summarization_agent.py
+from langchain_community.vectorstores import FAISS
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 import os
 import streamlit as st
-from agents import SearchAgent
-from config.config import model
-
+from src.agents import SearchAgent
+from src.config.config import model
+from src.agents.google_credentials import get_google_credentials
+# Get the credentials from the google_credentials.py file
+credentials = get_google_credentials()
 
             
-embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", credentials=credentials)
 
 class SummarizationAgent:
     def __init__(self):

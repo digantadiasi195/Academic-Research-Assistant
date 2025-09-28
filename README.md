@@ -1,89 +1,86 @@
-# Human Action Recognition with MS-TCN
+```markdown
+# Human Action Recognition System
 
-This demo uses a **Multi-Stage Temporal Convolutional Network (MS-TCN)** to recognize human actions from skeleton data on the **PKU-MMDv2 dataset**.
+## Project Overview
+This project implements a **Human Action Recognition System** using the **Multi-Stage Temporal Convolutional Network (MS-TCN)** on the **PKU-MMDv2 dataset**. The model performs **frame-level action classification** on skeleton data, recognizing **51 distinct human actions** plus a **background class** (total 52 classes).
 
-## Files
+The system processes 3D joint coordinates from two-person skeleton sequences and predicts actions in real time during inference with visual feedback.
 
-- `train_ms_tcn.py` – Trains the MS-TCN model  
-- `inference.py` – Runs real-time action recognition on videos with visual output
+---
 
-## How to Run
+## 📂 Directory Structure
+```
+ActionRecognition/
+├── models/                   # Saved model weights and normalization stats
+│   ├── ms_tcn_pku.pth        # Trained MS-TCN model checkpoint
+│   ├── joint_mean.npy        # Skeleton normalization mean
+│   ├── joint_std.npy         # Skeleton normalization std
+│
+├── logs/                     # Training logs and confusion matrices
+│
+├── train_ms_tcn.py           # Training script for MS-TCN model
+├── inference.py              # Real-time inference with visualization
+├── README.md                 # Project documentation
+```
 
-### 1. Train the model
+---
+
+## Dependencies
+Install required packages:
+```bash
+pip install torch opencv-python pandas numpy scikit-learn matplotlib seaborn
+```
+
+Ensure you have **PyTorch** and **OpenCV** installed with CUDA support (optional but recommended).
+
+---
+
+## Training the Model
+To train the model, run:
 ```bash
 python train_ms_tcn.py
+```
+This will:
+- Load skeleton data and labels from PKU-MMDv2
+- Normalize joint coordinates per joint
+- Train the MS-TCN model using cross-subject split
+- Save the best model based on F1-score
+- Generate confusion matrices every 5 epochs
 
-profile
-Qwen3-Max
-8:01 pm
-markdown
+> ⚠️ Update `DATA_ROOT` in `train_ms_tcn.py` to point to your PKU-MMDv2 directory.
 
+---
 
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-⌄
-⌄
-⌄
-⌄
-⌄
-# Human Action Recognition with MS-TCN
-
-This demo uses a **Multi-Stage Temporal Convolutional Network (MS-TCN)** to recognize human actions from skeleton data on the **PKU-MMDv2 dataset**.
-
-## Files
-
-- `train_ms_tcn.py` – Trains the MS-TCN model  
-- `inference.py` – Runs real-time action recognition on videos with visual output
-
-## How to Run
-
-### 1. Train the model
+## Inference & Visualization
+Run inference on any video from the dataset:
 ```bash
-python train_ms_tcn.py
-Saves model to models/ms_tcn_pku.pth and normalization stats to models/.
-
-2. Run inference
-bash
-
-
-1
 python inference.py
-Prompts you to select a video (e.g., 0002-M)
-Shows live skeleton + predicted action with ID, name, and confidence
-Press q or ESC to exit
-Note: Make sure your dataset is at E:/CARET_Project/CARET/PKUMMDv2/ (or update paths in the code). 
+```
+- Select a video ID (e.g., `0002-M`)
+- View real-time skeleton overlay with joint connections
+- See predicted action ID, name, and confidence
+- Color-coded action panel with blinking highlight for current action
+- Press `q` or `ESC` to exit
 
-Demo
-Inference Screenshot 1
+The system uses temporal smoothing and confidence thresholds to ensure stable predictions.
 
-Inference Screenshot 2
+---
 
-Requirements
-Python 3.8+
-PyTorch
-OpenCV
-pandas, numpy
-Install dependencies:
+## Dataset
+This project uses the **PKU-MMDv2 dataset** (skeleton modality):
+- **Input**: 150D skeleton vectors (2 persons × 25 joints × 3 coordinates)
+- **Labels**: Frame-wise action annotations (51 actions + background)
+- **Splits**: Supports cross-subject and cross-view evaluation
 
-bash
+> 📌 You must obtain the PKU-MMDv2 dataset separately and place it in the expected directory structure.
 
+---
 
-1
-pip install torch opencv-python pandas numpy
-Built for the CARET Project | PKU-MMDv2 dataset required 
+## Contributing
+Feel free to open issues or submit pull requests for improvements.
 
+---
 
-
-1
+## License
+MIT License © 2025
+```
